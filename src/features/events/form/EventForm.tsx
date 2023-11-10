@@ -1,18 +1,12 @@
 import { ChangeEvent, useState } from 'react';
-import { Button, ButtonGroup, Form, Header, Segment } from 'semantic-ui-react';
-import { AppEvent } from '../../../app/types/event';
-import { createId } from '@paralleldrive/cuid2';
+import { Link } from 'react-router-dom';
+import { Button, Form, Header, Segment } from 'semantic-ui-react';
 
-type Props = {
-    setFormOpen: (value: boolean) => void;
-    addEvent: (event: AppEvent) => void;
-    selectedEvent: AppEvent | null;
-    updateEvent: (event: AppEvent) => void;
-}
 
-export default function EventForm({ setFormOpen, addEvent, selectedEvent, updateEvent}: Props) {
+
+export default function EventForm() {
     
-    const initialValues = selectedEvent ?? {
+    const initialValues =  {
         title: '', 
         category: '',
         description: '',
@@ -25,10 +19,10 @@ export default function EventForm({ setFormOpen, addEvent, selectedEvent, update
 
 
     function onSubmit(){
-        selectedEvent ? updateEvent({...selectedEvent, ...values}) : 
-            addEvent({...values, id: createId(), hostedBy: 'Bob', attendees: [], hostPhotoURL: '' });
-        
-        setFormOpen(false);
+        console.log(values);
+        // selectedEvent ? updateEvent({...selectedEvent, ...values}) : 
+        //     addEvent({...values, id: createId(), hostedBy: 'Bob', attendees: [], hostPhotoURL: '' });  
+        //setFormOpen(false);
     }
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>){
@@ -38,7 +32,7 @@ export default function EventForm({ setFormOpen, addEvent, selectedEvent, update
 
     return (
         <Segment clearing>
-            <Header content={selectedEvent ? 'Update Event' : 'Create Event'} />
+            <Header content='Create Event' />
             <Form onSubmit={onSubmit}>
                 <Form.Field>
                     <input 
@@ -84,8 +78,7 @@ export default function EventForm({ setFormOpen, addEvent, selectedEvent, update
                 </Form.Field>
 
                 <Button type='submit' floated='right' positive content='Submit' />
-                <Button type='button' floated='right' content='Cancel'
-                    onClick={() => { setFormOpen(false) }} />
+                <Button type='button' floated='right' content='Cancel' as={Link} to='/events' />
             </Form>
         </Segment>
     )
